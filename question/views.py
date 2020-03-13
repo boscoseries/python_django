@@ -17,3 +17,13 @@ class QuestionView(APIView):
         queryset = self.get_questions()
         serializer = QuestionSerializer(queryset, many=True)
         return Response(data=serializer.data, status=status.HTTP_404_NOT_FOUND)
+
+    def post(self, request):
+        serializer = QuestionSerializer(data=request.data)
+        try:
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            print(e)
+            return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
