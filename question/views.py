@@ -32,3 +32,11 @@ class QuestionView(APIView):
         queryset = Question.objects.get(id=request.data['id'])
         queryset.delete()
         return Response(data='Deleted', status=status.HTTP_410_GONE)
+
+    def put(self, request):
+        queryset = Question.objects.get(id = request.data['id'])
+        serializer = QuestionSerializer(queryset, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
