@@ -27,3 +27,8 @@ class QuizView(APIView):
 							return Response(serializer.data, status=status.HTTP_201_CREATED)
 			except Exception as e:
 				return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
+
+	def delete(self, request):
+			queryset = Quiz.objects.get(id=request.data['id'])
+			queryset.delete()
+			return Response(data='Deleted', status=status.HTTP_410_GONE)

@@ -27,3 +27,8 @@ class QuestionView(APIView):
         except Exception as e:
             print(e)
             return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
+
+    def delete(self, request):
+        queryset = Question.objects.get(id=request.data['id'])
+        queryset.delete()
+        return Response(data='Deleted', status=status.HTTP_410_GONE)
